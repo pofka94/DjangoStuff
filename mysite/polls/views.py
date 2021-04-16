@@ -1,9 +1,30 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from django.template import loader
+
+from .models import Question
 
 # Create your views here.
 def index(request):
-    return HttpResponse('''
-    <a style="color:green; font-size:20em; font-family:sans-serif">Hello Yo!</a> <br>You're at the polls index!
-    <img src="https://www.tynker.com/projects/screenshot/5cdc63bfff13b72e100b1583/shrek-memes-2.png" alt="Shreek">
-    ''')
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    template = loader.get_template('polls/index.html')
+    context = {
+        'latest_question_list': latest_question_list,
+    }
+    return HttpResponse(template.render(context, request))
 
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Dis numba dont exist blood..")
+    return render(request, "polls/detail.html", {"question": question})
