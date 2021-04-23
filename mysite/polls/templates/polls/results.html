@@ -1,6 +1,10 @@
+{% comment %} {% load static %} {% endcomment %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
 <h1>{{ question.question_text }}</h1>
 
-<ul style="display: flex; flex-direction: row; justify-content: center;">
+<ul class="pollResultsContainer">
 {% for choice in question.choice_set.all %}
     <li style="background-color: darkseagreen; padding: 2em; border: 2px solid grey; list-style-type: none; flex-grow: {{ choice.votes }};">{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
 {% endfor %}
