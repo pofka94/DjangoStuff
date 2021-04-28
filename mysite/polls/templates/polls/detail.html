@@ -8,12 +8,15 @@
 
     <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}
-    {% for choice in question.choice_set.all %}
-        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-    {% endfor %}
+    <ul class="list-group list-group-flush">
+        {% for choice in question.choice_set.all %}
+            <li class="list-group-item">
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+            </li>
+        {% endfor %}
+    </ul>
     <input type="submit" value="Nah">
-    <a href="{% url 'polls:index' %}">Home Page</a> <!-- Home Button -->
     </form>
 
 {% endblock detail %}

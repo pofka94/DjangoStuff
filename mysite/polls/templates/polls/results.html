@@ -1,13 +1,14 @@
-{% comment %} {% load static %} {% endcomment %}
+{% extends 'polls/base.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"> {% endcomment %}
+{% block results %}
 
-<h1>{{ question.question_text }}</h1>
+    <h1>{{ question.question_text }}</h1>
+    <ul class="pollResultsContainer">
+        {% for choice in question.choice_set.all %}
+            <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>
 
-<ul class="pollResultsContainer">
-{% for choice in question.choice_set.all %}
-    <li style="background-color: darkseagreen; padding: 2em; border: 2px solid grey; list-style-type: none; flex-grow: {{ choice.votes }};">{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
-{% endfor %}
-</ul>
-
-<a href="{% url 'polls:detail' question.id %}">Yamete Senpai!</a>
+<a href="{% url 'polls:detail' question.id %}">Back</a>
+{% endblock results %}
